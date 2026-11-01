@@ -1,0 +1,28 @@
+# Gesture branch configuration for AI AINAK
+pose_extraction:
+  framework: "mediapipe"
+  model_type: "tasks_pose_landmarker"
+  model_path: "artifacts/gesture/pose_landmarker_lite.task"
+  min_detection_confidence: 0.5
+  min_tracking_confidence: 0.5
+  landmarks_count: 33
+  features_per_landmark: 4  # x, y, z, visibility
+
+classifier:
+  architecture: "LSTM"
+  weights: "artifacts/gesture/gesture_lstm.pt"
+  sequence_length: 24
+  feature_dim: 132  # 33 * 4
+  hidden_size: 128
+  num_layers: 2
+  dropout: 0.2
+  acceptance_threshold: 0.75
+  classes:
+    - "pointing"
+    - "waving"
+    - "stop"
+    - "neutral"
+
+temporal_processing:
+  max_gap_seconds: 0.5
+  smoothing_window: 3

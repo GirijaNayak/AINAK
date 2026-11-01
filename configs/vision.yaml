@@ -1,0 +1,37 @@
+# Vision branch configuration for AI AINAK
+model:
+  name: "YOLOv8n"
+  weights: "artifacts/vision/yolov8n.pt"
+  framework: "ultralytics"
+  task: "detect"
+  input_size: 640
+  confidence_threshold: 0.35
+  iou_threshold: 0.45
+  device: "cpu"  # "cuda:0" when GPU available
+
+tracking:
+  tracker_type: "bytetrack"
+  iou_threshold: 0.3
+  max_age_seconds: 1.0
+  track_history_length: 30
+
+depth_estimation:
+  enabled: true
+  method: "perspective_geometric_proxy"  # Monocular depth relative cue
+  near_threshold: 0.35                   # Normalized proximity threshold
+  imminent_threshold: 0.70                # Highly proximate / looming threshold
+
+hazard_scoring:
+  enabled: true
+  min_confidence: 0.35
+  critical_classes:
+    - "car"
+    - "truck"
+    - "bus"
+    - "motorcycle"
+    - "bicycle"
+    - "train"
+    - "traffic light"
+    - "stop sign"
+    - "person"
+  looming_rate_threshold: 0.05  # Delta depth expansion per second

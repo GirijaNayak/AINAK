@@ -1,0 +1,39 @@
+# Audio branch configuration for AI AINAK
+backbone:
+  name: "PANNs CNN14"
+  weights: "artifacts/audio/Cnn14_mAP=0.431.pth"
+  sample_rate: 32000
+  channels: 1  # Mono
+  embedding_dim: 2048
+  device: "cpu"
+
+preprocessing:
+  window_seconds: 2.0
+  hop_seconds: 1.0
+  min_amplitude: 1.0e-5
+  clip_range: [-1.0, 1.0]
+
+downstream_classifier:
+  type: "mlp"  # "logistic_regression" or "mlp"
+  weights: "artifacts/audio/downstream_mlp.pt"
+  num_classes: 50
+  hidden_dim: 256
+  dropout: 0.2
+  decision_threshold: 0.40
+
+noise_robustness:
+  enabled: true
+  min_snr_db: 5.0
+  silence_threshold: 1.0e-5
+  temporal_smoothing_window: 3
+  uncertainty_threshold: 0.35
+
+safety_critical_classes:
+  - "car_horn"
+  - "engine"
+  - "siren"
+  - "glass_breaking"
+  - "crying_baby"
+  - "dog"
+  - "footsteps"
+  - "train"

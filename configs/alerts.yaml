@@ -1,0 +1,39 @@
+# Alert policy, hazard prioritization, and feedback configuration for AI AINAK
+priorities:
+  immediate_attention:
+    rank: 1
+    cooldown_seconds: 2.0
+    min_confidence: 0.60
+    interrupt_current_speech: true
+  caution:
+    rank: 2
+    cooldown_seconds: 5.0
+    min_confidence: 0.50
+    interrupt_current_speech: false
+  gesture_feedback:
+    rank: 3
+    cooldown_seconds: 3.0
+    min_confidence: 0.75
+    interrupt_current_speech: false
+  informational:
+    rank: 4
+    cooldown_seconds: 10.0
+    min_confidence: 0.50
+    interrupt_current_speech: false
+  uncertain:
+    rank: 5
+    cooldown_seconds: 15.0
+    min_confidence: 0.30
+    interrupt_current_speech: false
+
+suppression:
+  duplicate_window_seconds: 8.0
+  max_queue_depth: 5
+  drop_lowest_priority_when_full: true
+
+speech:
+  primary_engine: "pyttsx3"
+  fallback_engine: "system_speech"  # Windows .NET System.Speech
+  rate_wpm: 180
+  volume: 1.0
+  spatial_cue_prefix: true  # e.g., "Left: Car approaching"

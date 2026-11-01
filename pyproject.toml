@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ai-ainak"
+version = "0.1.0"
+description = "Local multimodal assistive AI research prototype"
+requires-python = ">=3.10,<3.12"
+dependencies = [
+  "numpy>=1.24,<2.0", "torch>=2.1,<3", "ultralytics>=8.2,<9",
+  "opencv-python>=4.8,<5", "librosa>=0.10,<1", "soundfile>=0.12,<1",
+  "mediapipe>=0.10.14,<0.10.31", "panns-inference>=0.1.1", "PySide6>=6.6,<7",
+  "pyttsx3>=2.90,<3", "scikit-learn>=1.3,<2"
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8,<9"]
+
+[tool.setuptools.packages.find]
+include = ["ainak*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"

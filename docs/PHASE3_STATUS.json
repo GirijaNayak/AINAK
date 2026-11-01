@@ -1,0 +1,88 @@
+{
+  "schema_version": "ainak.phase3-status.v1",
+  "updated": "2026-10-12",
+  "overall_status": "partially_complete_blocked_on_real_training_data",
+  "environment": {
+    "python": "3.10.6",
+    "torch": "2.2.2+cpu",
+    "cuda_available": false,
+    "mediapipe": "0.10.31"
+  },
+  "checkpoints": {
+    "vision": {
+      "path": "artifacts/vision/yolov8n.pt",
+      "available": true,
+      "id": "sha256:f59b3d833e2ff32e194b5bb8e08d211dc7c5bdf144b90d2c8412c47ccfc83b36"
+    },
+    "audio": {
+      "path": "artifacts/audio/Cnn14_mAP=0.431.pth",
+      "available": true,
+      "id": "sha256:0dc499e40e9761ef5ea061ffc77697697f277f6a960894903df3ada000e34b31"
+    },
+    "gesture": {
+      "path": "artifacts/gesture/gesture_lstm.pt",
+      "available": false
+    },
+    "fusion": {
+      "path": "artifacts/fusion/fusion.pt",
+      "available": false
+    }
+  },
+  "implementation": {
+    "feature_export": "implemented_and_smoke_tested",
+    "reviewed_timestamp_alignment": "implemented_and_unit_tested",
+    "gesture_training": "implemented_but_not_run_no_reviewed_sequences",
+    "fusion_training_and_ablation": "implemented_but_not_run_no_real_aligned_sessions",
+    "desktop": "starts_offscreen_vision_only",
+    "media_pipe_legacy_pose_api": "unavailable_in_installed_0.10.31_use_pinned_version_or_local_task_bundle"
+  },
+  "audio_zero_shot_esc50": {
+    "clips": 2000,
+    "accuracy": 0.776,
+    "macro_precision": 0.7716,
+    "macro_recall": 0.776,
+    "macro_f1": 0.7483,
+    "scope": "ontology_mapped_zero_shot_not_finetuning_or_safety_validation"
+  },
+  "synthetic_replay_smoke": {
+    "session_id": "phase3-smoke-20261012",
+    "status": "partial_blocked",
+    "vision_features": 3,
+    "audio_features": 5,
+    "gesture_features": 0,
+    "timeline_steps": 8,
+    "trace_records": 8,
+    "transformer_invocations": 0,
+    "all_three_branches_same_invocation": false,
+    "export_seconds": 16.6060182,
+    "replay_seconds": 0.0898585,
+    "vision_cold_first_ms": 10389.6329,
+    "vision_warmed_mean_ms": 62.45225,
+    "audio_cold_first_ms": 57.8075,
+    "audio_warmed_mean_ms": 35.179975,
+    "fixture_claims_accuracy": false
+  },
+  "verification": {
+    "pytest_passed": 24,
+    "pytest_skipped": 1,
+    "skip_reason": "no consented reviewed gesture sequences or real aligned multimodal sessions",
+    "compileall": "passed",
+    "cli_help": "passed",
+    "git_diff_check": "passed",
+    "desktop_offscreen_startup_shutdown": "passed"
+  },
+  "licensing": {
+    "commercial_distribution_cleared": false,
+    "esc50": "CC BY-NC 3.0; non-commercial",
+    "other_models_and_data": "review_upstream_terms_before_distribution"
+  },
+  "blockers": [
+    "no consented reviewed gesture sequences",
+    "no trained gesture LSTM checkpoint",
+    "no human-labeled aligned real multimodal sessions",
+    "no trained fusion Transformer checkpoint",
+    "installed MediaPipe 0.10.31 has no mp.solutions API and no local Tasks model bundle is supplied",
+    "Windows SAPI speech test previously failed with COM error -2147200967"
+  ],
+  "safety_status": "research_prototype_not_certified_for_unsupervised_navigation"
+}

@@ -1,0 +1,129 @@
+{
+  "schema": "ainak.phase4-evidence.v1",
+  "updated": "2026-10-12",
+  "overall_status": "engineering_workflow_complete_real_training_and_product_demonstration_blocked",
+  "environment": {
+    "os": "Windows x64",
+    "python": "3.10.6",
+    "torch": "2.2.2+cpu",
+    "cuda_available": false,
+    "cpu_threads": 6,
+    "workspace_venv_uses_system_site_packages": true
+  },
+  "artifacts": {
+    "vision_checkpoint_present": true,
+    "vision_checkpoint_sha256": "f59b3d833e2ff32e194b5bb8e08d211dc7c5bdf144b90d2c8412c47ccfc83b36",
+    "audio_checkpoint_present": true,
+    "audio_checkpoint_sha256": "0dc499e40e9761ef5ea061ffc77697697f277f6a960894903df3ada000e34b31",
+    "gesture_checkpoint_present": false,
+    "fusion_checkpoint_present": false,
+    "reviewed_gesture_sequences": 0,
+    "eligible_aligned_fusion_examples": 0,
+    "pose_bundle_present": false,
+    "mediapipe_version": "0.10.31",
+    "pose_selected_api": "tasks_pose_landmarker",
+    "pose_extraction_ready": false,
+    "pose_extraction_verified": false
+  },
+  "transformer_zero_call": {
+    "diagnosis": "trained checkpoint is missing; provenance gate correctly suppresses production invocation",
+    "software_test_gap_fixed": "synthetic tests previously could label random weights trained; production now requires trainer provenance and synthetic tests opt into a private test-only path",
+    "missing_modality_policy": "valid subsets may run with explicit masks when a verified trained checkpoint exists; all-empty/stale windows reject to deterministic fallback",
+    "full_fusion_completion_invariant": "requires a successful forward with vision, audio, and gesture all contributing in the same window",
+    "synthetic_three_branch_forward_tested": true,
+    "real_three_branch_invocation_verified": false
+  },
+  "replay": {
+    "report": "reports/phase4-replay-check.json",
+    "trace": "reports/phase4-replay-check.trace.jsonl",
+    "session_id": "phase3-smoke-20261012",
+    "fixture_is_synthetic_plumbing_only": true,
+    "status": "partial_blocked",
+    "vision_feature_count": 3,
+    "audio_feature_count": 5,
+    "gesture_feature_count": 0,
+    "trace_steps": 8,
+    "transformer_attempts": 0,
+    "transformer_successes": 0,
+    "transformer_failures": 0,
+    "all_three_same_invocation": false,
+    "blockers": ["gesture checkpoint absent", "trained fusion checkpoint absent", "no three-branch trained invocation"]
+  },
+  "training_and_evaluation": {
+    "gesture_training": "blocked_no_reviewed_sequences",
+    "fusion_training": "blocked_no_eligible_aligned_reviewed_examples",
+    "fusion_ablations": "blocked_no_trained_checkpoint_and_test_data",
+    "audio_esc50": {
+      "status": "zero_shot_evaluated",
+      "samples": 2000,
+      "folds": 5,
+      "accuracy": 0.776,
+      "macro_precision": 0.7716480736299143,
+      "macro_recall": 0.776,
+      "macro_f1": 0.7483089853479463,
+      "license": "CC BY-NC 3.0",
+      "proxy_categories": ["drinking_sipping", "can_opening", "washing_machine"]
+    },
+    "vision": {
+      "status": "inference_profiled_no_ground_truth_metrics",
+      "sample_images": 2,
+      "warmup_repeats_each": 1,
+      "measured_repeats_each": 2,
+      "wall_mean_ms_320": [29.41875, 22.9843],
+      "wall_mean_ms_640": [51.99905, 47.9663]
+    }
+  },
+  "performance": {
+    "device": "cpu",
+    "synthetic_replay_only": true,
+    "vision_cold_first_ms": 10558.5694,
+    "vision_warm_mean_ms": 55.0431,
+    "vision_warm_count": 2,
+    "audio_cold_first_ms": 49.9472,
+    "audio_warm_mean_ms": 38.300425,
+    "audio_warm_count": 4,
+    "fusion_decision_replay_mean_ms": 0.0388625,
+    "fusion_decision_replay_p95_ms": 0.081695,
+    "trace_steps": 8,
+    "feature_export_seconds": 16.3211174,
+    "replay_only_seconds_latest": 0.0728075,
+    "gesture_latency": null,
+    "memory_benchmark": null,
+    "real_time_claim_supported": false
+  },
+  "verification": {
+    "baseline_pytest": "24 passed, 1 skipped",
+    "final_pytest": "44 passed, 1 skipped",
+    "skip_reason": "real integration requires trained gesture/fusion checkpoints, ready pose extraction, and paired reviewed session",
+    "compileall": "passed",
+    "cli_help": "passed",
+    "doctor": "passed",
+    "pose_status": "passed_reports_not_ready",
+    "desktop_offscreen_startup_shutdown": "passed",
+    "speech_test": "passed_spoken_count_1_via_powershell_system_speech",
+    "pyttsx3": "failed_com_error_-2147200967; fallback succeeded",
+    "pose_model_acquisition": "blocked_dns_getaddrinfo_failed",
+    "compatible_mediapipe_install": "blocked_dns_getaddrinfo_failed"
+  },
+  "licensing": {
+    "commercial_distribution_cleared": false,
+    "esc50_license": "CC BY-NC 3.0",
+    "ultralytics_license": "AGPL-3.0_or_Enterprise_review_required",
+    "panns_package": "MIT",
+    "panns_checkpoint_and_audioset_terms": "unresolved",
+    "mediapipe_package": "Apache-2.0",
+    "pose_bundle": "not_obtained_and_terms_unreviewed",
+    "gesture_dataset": "none_used",
+    "python_dependency_inventory": "docs/DEPENDENCY_LICENSES.json",
+    "dependency_distributions_in_inventory": 229,
+    "incomplete_dependency_license_metadata": 3,
+    "full_native_transitive_asset_review": "incomplete"
+  },
+  "safety": {
+    "certified": false,
+    "safe_for_unsupervised_navigation": false,
+    "collision_prediction_validated": false,
+    "physical_distance_or_bearing": false,
+    "calibrated_risk": false
+  }
+}
