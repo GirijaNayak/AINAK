@@ -25,6 +25,7 @@ LOG = logging.getLogger("ainak.dashboard.app")
 
 BASE_DIR = Path(__file__).resolve().parent
 STATIC_DIR = BASE_DIR / "static"
+FRONTEND_DIST = BASE_DIR.parents[2] / "frontend" / "dist"
 
 app = FastAPI(
     title="AI AINAK – Multimodal Assistive Intelligence Console",
@@ -335,13 +336,34 @@ async def websocket_session_replay(websocket: WebSocket, session_id: str):
 # STATIC ASSETS AND SINGLE-PAGE APPLICATION
 # ------------------------------------------------------------------------------
 
+# Mount legacy static assets directory (for backward compatibility and test asserts)
 app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
+
+# Mount modern React + Vite production build assets when compiled
+if (FRONTEND_DIST / "assets").is_dir():
+    app.mount("/assets", StaticFiles(directory=str(FRONTEND_DIST / "assets")), name="frontend-assets")
+
+
+@app.get("/favicon.svg")
+async def serve_favicon():
+    favicon = FRONTEND_DIST / "favicon.svg"
+    if favicon.is_file():
+        return FileResponse(str(favicon), media_type="image/svg+xml")
+    raise HTTPException(status_code=404, detail="Favicon not found")
 
 
 @app.get("/")
 async def serve_index():
-    """Serve the single-page application dashboard."""
-    index_file = STATIC_DIR / "index.html"
-    if not index_file.is_file():
-        raise HTTPException(status_code=404, detail="Dashboard index.html not found")
-    return FileResponse(str(index_file))
+    """Serve the modern single-page application dashboard (falls back to legacy static if not built)."""
+    modern_index = FRONTEND_DIST / "index.html"
+    if modern_index.is_file():
+        return FileResponse(str(modern_index))
+
+    legacy_index = STATIC_DIR / "index.html"
+    if legacy_index.is_file():
+        return FileResponse(str(legacy_index))
+
+    raise HTTPException(
+        status_code=404,
+        detail="Dashboard frontend not found. Please run 'npm run build' in the frontend/ directory."
+    )
