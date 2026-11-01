@@ -169,3 +169,45 @@ def test_websocket_replay_stream(client):
         ws.send_json({"command": "pause"})
         # Send stop command
         ws.send_json({"command": "stop"})
+
+
+def test_audio_classify_clip_silent(client):
+    import io
+    import soundfile as sf
+    bio = io.BytesIO()
+    sf.write(bio, np.zeros(16000, dtype=np.float32), 16000, format="WAV")
+    bio.seek(0)
+    response = client.post(
+        "/api/audio/classify-clip",
+        files={"file": ("silence.wav", bio, "audio/wav")},
+        data={"timestamp": 0.0},
+    )
+    assert response.status_code == 200
+    data = response.json()
+    assert data["is_silent"] is True
+    assert data["predicted_class"] == "silence / ambient"
+    assert data["feature_dim"] == 2048
+
+
+def test_audio_classify_clip_active(client):
+    import io
+    import soundfile as sf
+    wav_path = "datasets/recordings/session-multimodal-01/audio.wav"
+    audio_data, sr = sf.read(wav_path)
+    bio = io.BytesIO()
+    # Sample active region
+    sf.write(bio, audio_data[70000:102000], sr, format="WAV")
+    bio.seek(0)
+    response = client.post(
+        "/api/audio/classify-clip",
+        files={"file": ("active.wav", bio, "audio/wav")},
+        data={"timestamp": 2.2},
+    )
+    assert response.status_code == 200
+    data = response.json()
+    assert data["is_silent"] is False
+    assert "top_5" in data
+    assert len(data["top_5"]) > 0
+    assert data["feature_dim"] == 2048
+    assert data["latency_ms"] > 0
+

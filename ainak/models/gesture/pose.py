@@ -69,8 +69,8 @@ def acquire_pose_model(output: Path, *, overwrite: bool = False, max_bytes: int 
         raise
 
 
-def pose_readiness(model_path: Path | None = None) -> dict[str, Any]:
-    """Report API/model readiness without claiming that a frame was processed."""
+def pose_readiness(model_path: Path | None = None, *, verify_source: Path | None = None) -> dict[str, Any]:
+    """Report API/model readiness, optionally verifying extraction on a real image/video frame."""
     try:
         import mediapipe as mp
     except Exception as exc:
@@ -90,6 +90,34 @@ def pose_readiness(model_path: Path | None = None) -> dict[str, Any]:
         api = "unsupported"
         model_required = True
         model_available = False
+
+    verified = False
+    verified_details = None
+    if verify_source and Path(verify_source).exists() and (api == "tasks_pose_landmarker" and model_available):
+        import cv2
+        tracker = TasksPoseAdapter(Path(model_path), static_image_mode=True)
+        src_p = Path(verify_source)
+        frame = None
+        if src_p.suffix.lower() in [".jpg", ".jpeg", ".png", ".bmp"]:
+            frame = cv2.imread(str(src_p))
+        elif src_p.suffix.lower() in [".mp4", ".avi", ".mov"]:
+            cap = cv2.VideoCapture(str(src_p))
+            if cap.isOpened():
+                ret, frame = cap.read()
+                cap.release()
+        if frame is not None:
+            rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            res = tracker.process(rgb)
+            if res.pose_landmarks and hasattr(res.pose_landmarks, "landmark"):
+                verified = True
+                verified_details = {
+                    "source": str(src_p),
+                    "landmarks_extracted": len(res.pose_landmarks.landmark),
+                    "visibility_mean": float(round(float(np.mean([getattr(lm, "visibility", 1.0) for lm in res.pose_landmarks.landmark])), 4)),
+                }
+        tracker.close()
+
+    note = "Real landmark extraction verified on source media." if verified else "Readiness is dependency/model inspection only; process a local video to verify extraction."
     return {"installed": True, "version": getattr(mp, "__version__", "unknown"),
         "python_version": platform.python_version(), "python_architecture": platform.architecture()[0],
         "selected_api": api,
@@ -97,8 +125,9 @@ def pose_readiness(model_path: Path | None = None) -> dict[str, Any]:
                          "required": model_required, "available": model_available,
                          "bytes": Path(model_path).stat().st_size if model_available and model_path else None},
         "extraction_ready": api == "legacy_solutions_pose" or (api == "tasks_pose_landmarker" and model_available),
-        "pose_extraction_verified": False,
-        "verification_note": "Readiness is dependency/model inspection only; process a local video to verify extraction."}
+        "pose_extraction_verified": verified,
+        "verification_details": verified_details,
+        "verification_note": note}
 
 
 class TasksPoseAdapter:

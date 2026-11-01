@@ -13,13 +13,13 @@ AI AINAK is a research-stage multimodal assistive system designed to process vis
 
 All four modality and processing stages are implemented, trained, quantitatively evaluated on held-out benchmarks, and verified with 100% passing tests:
 
-- **Vision Branch:** Ultralytics YOLOv8n object detection + temporal ByteTrack tracking + relative depth estimation + assistive hazard scoring. Evaluated on COCO128 (`reports/vision-coco128-val.json`).
+- **Vision Branch:** Ultralytics YOLOv8n object detection + temporal IoU tracking + relative depth estimation + assistive hazard scoring. Evaluated on COCO128 (`reports/vision-coco128-val.json`).
 - **Audio Branch:** Pretrained PANNs CNN14 backbone + downstream fine-tuned AudioMLP on ESC-50 held-out Fold 5. Evaluated on held-out fold, 10 dB/20 dB SNR noise robustness, and silence rejection (`reports/audio-downstream-eval.json`).
-- **Gesture Branch:** Google MediaPipe Pose Tasks API (`pose_landmarker_lite.task`) + 2-layer Bidirectional GestureLSTM trained on disjoint multi-subject participant splits (`artifacts/gesture/gesture_lstm.pt`, `artifacts/gesture/gesture_lstm.metrics.json`).
+- **Gesture Branch:** Google MediaPipe Pose Tasks API (`pose_landmarker_lite.task`, MediaPipe 0.10.32) + 2-layer Bidirectional GestureLSTM trained on disjoint multi-subject participant splits (`artifacts/gesture/gesture_lstm.pt`, `artifacts/gesture/gesture_lstm.metrics.json`).
 - **Multimodal Fusion Branch:** 2-layer 4-head Transformer encoder with modality dropout and linear feature projections trained on reviewed session windows with disjoint participant splits (`artifacts/fusion/fusion.pt`). Evaluated across all 7 modality ablations and late-fusion MLP baseline (`reports/fusion-ablations.json`).
 - **Decision & Speech:** Deterministic prioritized alert engine with cooldown suppression + local TTS (`pyttsx3` with Windows SAPI / System.Speech fallback).
 - **Interactive Console:** Full-featured laboratory demonstration dashboard (`python -m ainak.interfaces.dashboard`) exposing all 3 sensory branches, real-time audio spectrogram, 33-point pose skeleton, 2-layer 4-head Transformer fusion forward pass, decision engine cards, synchronized session replay, and presentation mode.
-- **Automated Tests:** **55 passed, 0 skipped, 0 failed** in 18.5s (`pytest -v`), covering unit tests, integration pipelines, REST APIs, and WebSocket streaming.
+- **Automated Tests:** **57 passed, 0 skipped, 0 failed** in ~15s (`pytest -v`), covering unit tests, integration pipelines, REST APIs, and WebSocket streaming.
 
 ---
 
@@ -42,7 +42,7 @@ All four modality and processing stages are implemented, trained, quantitatively
 flowchart TD
     subgraph VisionBranch["1. Vision Branch"]
         V_IN["Camera / Video Frame"] --> YOLO["YOLOv8n Detector"]
-        YOLO --> TRACK["ByteTrack Temporal Tracker"]
+        YOLO --> TRACK["IoU Temporal Tracker"]
         TRACK --> DEPTH["Relative Depth Estimator (Perspective/Area)"]
         DEPTH --> HAZARD["Assistive Hazard Scorer"]
         HAZARD --> V_FEAT["Vision Feature Vector (128-D)"]
@@ -105,7 +105,7 @@ python -m ainak.interfaces.cli speech-test --text "AI AINAK multimodal assistive
 ```
 
 ### 3. Run Automated Tests
-Execute the comprehensive 45-test suite:
+Execute the comprehensive 57-test suite:
 ```powershell
 python -m pytest -v
 ```
@@ -148,7 +148,7 @@ AI-AINAK/
 ├── docs/                       # Architecture, Model Cards, training guides, troubleshooting
 ├── reports/                    # Quantitative validation and ablation reports (JSON)
 ├── scripts/                    # Training, evaluation, and paired session scripts
-└── tests/                      # Unit and integration test suite (45 tests)
+└── tests/                      # Unit and integration test suite (57 tests)
 ```
 
 ---

@@ -201,6 +201,7 @@ def build_parser() -> argparse.ArgumentParser:
     sub.add_parser("doctor",help="show local Python, torch, CUDA, and artifact readiness")
     pose_status=sub.add_parser("pose-status",help="diagnose MediaPipe API, model bundle, and pose extraction readiness")
     pose_status.add_argument("--pose-model",type=Path,default=Path("artifacts/gesture/pose_landmarker_lite.task"))
+    pose_status.add_argument("--verify-source",type=Path,default=None,help="optional path to image or video to verify real pose landmark extraction")
     pose_acquire=sub.add_parser("acquire-pose",help="download Google's documented local Pose Landmarker Lite bundle")
     pose_acquire.add_argument("--output",type=Path,default=Path("artifacts/gesture/pose_landmarker_lite.task"))
     pose_acquire.add_argument("--overwrite",action="store_true")
@@ -243,7 +244,7 @@ def main(argv: list[str] | None=None) -> int:
             print(json.dumps(report,indent=2)); return 0
         if args.command=="pose-status":
             from ..models.gesture.pose import pose_readiness
-            report=pose_readiness(args.pose_model)
+            report=pose_readiness(args.pose_model, verify_source=args.verify_source)
             print(json.dumps(report,indent=2)); return 0
         if args.command=="acquire-pose":
             from ..models.gesture.pose import acquire_pose_model

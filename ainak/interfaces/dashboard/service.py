@@ -397,31 +397,55 @@ class DashboardService:
         start = time.perf_counter()
 
         now = timestamp if timestamp is not None else time.time()
-        # Extract 2048-D bottleneck feature
-        scores, embedding = backbone.infer(waveform_32k, return_embedding=True)
-        # Classify with downstream AudioMLP
-        top_class, top_conf, top_k_list, event = classifier.predict_embedding(embedding, now, top_k=5)
-        latency_ms = (time.perf_counter() - start) * 1000
 
-        # Silence rejection check
+        # Check silence
         rms = float(np.sqrt(np.mean(waveform_32k**2)))
-        is_silence = bool(rms < 0.005 or top_conf < classifier.confidence_threshold)
+        if rms < 0.005:
+            # Silence: do not run heavy inference
+            top_class = "silence / ambient"
+            top_conf = 0.0
+            top_k_list = [{"class": "silence / ambient", "confidence": 1.0}]
+            latency_ms = (time.perf_counter() - start) * 1000
+            embedding = np.zeros(2048, dtype=np.float32)
+            is_silent = True
+        else:
+            try:
+                ranked, bb_event = backbone.infer(waveform_32k, timestamp=now)
+                embedding = bb_event.feature
+                top_class, top_conf, top_k_list, event = classifier.predict_embedding(embedding, now, top_k=5)
+                is_silent = bool(top_conf < classifier.confidence_threshold)
+            except ValueError:
+                # Caught silence from prepare_audio_window
+                top_class = "silence / ambient"
+                top_conf = 0.0
+                top_k_list = [{"class": "silence / ambient", "confidence": 1.0}]
+                embedding = np.zeros(2048, dtype=np.float32)
+                is_silent = True
+
+        latency_ms = (time.perf_counter() - start) * 1000
+        emb_sample = [float(round(v, 4)) for v in embedding[:10]]
+        top_5_standard = [{"class_name": item["class"], "probability": float(round(item["confidence"], 4))} for item in top_k_list]
 
         return {
             "timestamp": now,
-            "predicted_class": top_class if not is_silence else "silence / ambient",
+            "predicted_class": top_class if not is_silent else "silence / ambient",
+            "top_class": top_class if not is_silent else "silence / ambient",
             "confidence": float(round(top_conf, 4)),
-            "is_silence": is_silence,
+            "is_silent": is_silent,
+            "is_silence": is_silent,
             "rms_energy": float(round(rms, 5)),
+            "top_5": top_5_standard,
             "top_classes": top_k_list,
-            "embedding_sample": [float(round(v, 4)) for v in embedding[:8]],
+            "embedding_sample": emb_sample,
+            "bottleneck_sample": emb_sample,
             "feature_dim": len(embedding),
+            "bottleneck_dim": len(embedding),
             "latency_ms": float(round(latency_ms, 2)),
         }
 
     def infer_gesture_frame(self, frame_bgr: np.ndarray, timestamp: float | None = None) -> dict[str, Any]:
         """Run MediaPipe Pose landmarker, extract skeleton, and pass to GestureLSTM."""
-        from ...models.gesture.lstm import extract_pose_landmarks
+        from ...models.gesture.lstm import normalize_landmarks
         tracker = self.get_pose_tracker()
         recognizer = self.get_gesture_recognizer()
         start = time.perf_counter()
@@ -434,6 +458,7 @@ class DashboardService:
         result = tracker.process(rgb, timestamp_ms=stamp_ms)
 
         landmarks_raw = []
+        normalized_vector = None
         if result.pose_landmarks and hasattr(result.pose_landmarks, "landmark"):
             for lm in result.pose_landmarks.landmark:
                 landmarks_raw.append({
@@ -442,9 +467,9 @@ class DashboardService:
                     "z": float(round(lm.z, 4)),
                     "visibility": float(round(getattr(lm, "visibility", 1.0), 4)),
                 })
+            points = np.array([[lm.x, lm.y, lm.z, getattr(lm, "visibility", 1.0)] for lm in result.pose_landmarks.landmark], dtype=np.float32)
+            normalized_vector = normalize_landmarks(points)
 
-        # 2. Extract normalized vector (132-D)
-        normalized_vector = extract_pose_landmarks(frame_bgr, tracker, stamp_ms)
         event = None
         if normalized_vector is not None:
             event = recognizer.append(normalized_vector, now)
