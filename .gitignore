@@ -11,3 +11,14 @@ datasets/**
 reports/**
 runs/
 *.part
+
+# Large model checkpoints stored locally
+/weights/clip/ViT-B-32.pt
+/backups/v1_original/checkpoints/Cnn14_mAP=0.431.pth
+
+# Large model checkpoints
+/weights/clip/ViT-B-32.pt
+/checkpoints/audio/Cnn14_mAP=0.431.pth
+/backups/v1_original/checkpoints/Cnn14_mAP=0.431.pth
+/.venv/
+

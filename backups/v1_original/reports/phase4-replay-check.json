@@ -1,0 +1,102 @@
+{
+  "status": "partial_blocked",
+  "full_trained_multimodal_demo": false,
+  "session_id": "phase3-smoke-20261012",
+  "recording_timing": {
+    "video_file": "C:\\Users\\girijanayak\\OneDrive\\Documents\\ChatGPT\\AINAK\\datasets\\recordings\\phase3-smoke-20261012\\video.mp4",
+    "audio_file": "C:\\Users\\girijanayak\\OneDrive\\Documents\\ChatGPT\\AINAK\\datasets\\recordings\\phase3-smoke-20261012\\audio.wav",
+    "video_duration_seconds": 0.6,
+    "audio_duration_seconds": 3.0,
+    "overlap_start_seconds": 0.0,
+    "overlap_end_seconds": 0.6,
+    "timing_validation_basis": "recording.json file offsets and media durations",
+    "clock_spans": {}
+  },
+  "source_recordings": {
+    "video": {
+      "path": "C:\\Users\\girijanayak\\OneDrive\\Documents\\ChatGPT\\AINAK\\datasets\\recordings\\phase3-smoke-20261012\\video.mp4",
+      "sha256": "sha256:f09738fd5472904a7f2de6328c48041a331c3ada2d32cae26e957a3c3500939a"
+    },
+    "audio": {
+      "path": "C:\\Users\\girijanayak\\OneDrive\\Documents\\ChatGPT\\AINAK\\datasets\\recordings\\phase3-smoke-20261012\\audio.wav",
+      "sha256": "sha256:88e074fad5ccb2d46ac7e0887706f064572e3fa700137c9bf679c8e2d0b985c7"
+    }
+  },
+  "model_status": {
+    "vision": {
+      "status": "ready",
+      "checkpoint_id": "sha256:f59b3d833e2ff32e194b5bb8e08d211dc7c5bdf144b90d2c8412c47ccfc83b36"
+    },
+    "audio": {
+      "status": "ready",
+      "checkpoint_id": "sha256:0dc499e40e9761ef5ea061ffc77697697f277f6a960894903df3ada000e34b31",
+      "duration_seconds": 3.0
+    },
+    "gesture": {
+      "status": "unavailable",
+      "reason": "gesture checkpoint missing: artifacts\\gesture\\gesture_lstm.pt"
+    },
+    "fusion": {
+      "status": "unavailable",
+      "reason": "trained Transformer checkpoint missing: artifacts\\fusion\\fusion.pt"
+    }
+  },
+  "valid_feature_counts": {
+    "vision": 3,
+    "audio": 5,
+    "gesture": 0
+  },
+  "feature_records_seen": 8,
+  "timeline_steps": 8,
+  "transformer_invocation_attempts": 0,
+  "transformer_invocations": 0,
+  "transformer_failed_invocations": 0,
+  "all_three_branches_same_invocation": false,
+  "trace_records": 8,
+  "trace_jsonl": "C:\\Users\\girijanayak\\OneDrive\\Documents\\ChatGPT\\AINAK\\reports\\phase4-replay-check.trace.jsonl",
+  "latency_ms": {
+    "fusion_and_decision_mean": 0.03886250010509684,
+    "fusion_and_decision_p95": 0.08169500051735665,
+    "timed_steps": 8,
+    "per_modality_model_stage": {
+      "vision": {
+        "cold_first_ms": 10558.569400000124,
+        "after_first_observation_warmup": {
+          "mean_ms": 55.043100000148115,
+          "p95_ms": 55.43847000089954,
+          "count": 2
+        },
+        "all_observations": 3
+      },
+      "audio": {
+        "cold_first_ms": 49.9472000010428,
+        "after_first_observation_warmup": {
+          "mean_ms": 38.30042500067066,
+          "p95_ms": 50.13592000041171,
+          "count": 4
+        },
+        "all_observations": 5
+      },
+      "gesture": {
+        "cold_first_ms": null,
+        "after_first_observation_warmup": {
+          "mean_ms": null,
+          "p95_ms": null,
+          "count": 0
+        },
+        "all_observations": 0
+      }
+    }
+  },
+  "export_wall_seconds": 16.32111740000073,
+  "demo_replay_wall_seconds": 0.07280749999881664,
+  "export_plus_replay_wall_seconds": 16.39392559999942,
+  "latency_protocol": "first feature per modality reported as cold start; warmed mean/p95 exclude that first feature; replay latency covers only synchronization/fusion/decision after features are exported",
+  "errors": {},
+  "blockers": [
+    "gesture checkpoint missing: artifacts\\gesture\\gesture_lstm.pt",
+    "trained Transformer checkpoint missing: artifacts\\fusion\\fusion.pt",
+    "no single trained Transformer invocation received valid vision, audio, and gesture features together"
+  ],
+  "note": "A partial trace is an execution diagnostic, not evidence of trained safety performance."
+}

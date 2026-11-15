@@ -1,0 +1,127 @@
+{
+  "device": "cpu",
+  "image_size": 640,
+  "checkpoint": "artifacts\\vision\\yolov8n.pt",
+  "checkpoint_sha256": "f59b3d833e2ff32e194b5bb8e08d211dc7c5bdf144b90d2c8412c47ccfc83b36",
+  "python": "3.10.6",
+  "torch": "2.2.2+cpu",
+  "results": [
+    {
+      "image": "C:\\Users\\girijanayak\\AppData\\Local\\Programs\\Python\\Python310\\Lib\\site-packages\\ultralytics\\assets\\bus.jpg",
+      "width": 810,
+      "height": 1080,
+      "detections": [
+        {
+          "class": "bus",
+          "confidence": 0.8734485507011414,
+          "bbox_xyxy": [
+            22.871320724487305,
+            231.2772674560547,
+            805.0026245117188,
+            756.8403930664062
+          ]
+        },
+        {
+          "class": "person",
+          "confidence": 0.8656915426254272,
+          "bbox_xyxy": [
+            48.55046463012695,
+            398.5522155761719,
+            245.34556579589844,
+            902.7026977539062
+          ]
+        },
+        {
+          "class": "person",
+          "confidence": 0.8528353571891785,
+          "bbox_xyxy": [
+            669.472900390625,
+            392.1861267089844,
+            809.7201538085938,
+            877.0354614257812
+          ]
+        },
+        {
+          "class": "person",
+          "confidence": 0.8252245187759399,
+          "bbox_xyxy": [
+            221.51730346679688,
+            405.7985534667969,
+            344.97064208984375,
+            857.53662109375
+          ]
+        },
+        {
+          "class": "person",
+          "confidence": 0.26111268997192383,
+          "bbox_xyxy": [
+            0.0,
+            550.525146484375,
+            63.006935119628906,
+            873.4429321289062
+          ]
+        },
+        {
+          "class": "stop sign",
+          "confidence": 0.25506916642189026,
+          "bbox_xyxy": [
+            0.058167457580566406,
+            254.4593963623047,
+            32.55740737915039,
+            324.8741455078125
+          ]
+        }
+      ],
+      "warmup_runs": 1,
+      "measured_runs": 2,
+      "wall_latency_ms_mean": 51.99904999972205,
+      "ultralytics_preprocess_ms": 1.6673000000082538,
+      "ultralytics_inference_ms": 49.62230000001,
+      "ultralytics_postprocess_ms": 1.031699999657576
+    },
+    {
+      "image": "C:\\Users\\girijanayak\\AppData\\Local\\Programs\\Python\\Python310\\Lib\\site-packages\\ultralytics\\assets\\zidane.jpg",
+      "width": 1280,
+      "height": 720,
+      "detections": [
+        {
+          "class": "person",
+          "confidence": 0.8359677791595459,
+          "bbox_xyxy": [
+            114.86984252929688,
+            197.41204833984375,
+            1114.46875,
+            711.889404296875
+          ]
+        },
+        {
+          "class": "person",
+          "confidence": 0.818955659866333,
+          "bbox_xyxy": [
+            748.46142578125,
+            41.85516357421875,
+            1143.07568359375,
+            713.02392578125
+          ]
+        },
+        {
+          "class": "tie",
+          "confidence": 0.29097315669059753,
+          "bbox_xyxy": [
+            439.47467041015625,
+            437.0735168457031,
+            524.3458862304688,
+            709.15966796875
+          ]
+        }
+      ],
+      "warmup_runs": 1,
+      "measured_runs": 2,
+      "wall_latency_ms_mean": 47.96630000009827,
+      "ultralytics_preprocess_ms": 2.108300000145391,
+      "ultralytics_inference_ms": 46.250599999439146,
+      "ultralytics_postprocess_ms": 0.9934999998222338
+    }
+  ],
+  "limitations": "Image samples only; no ground-truth labels, so no detection accuracy or mAP is computed. Wall timing includes Python/predictor overhead; Ultralytics stage times are reported separately."
+}

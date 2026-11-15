@@ -1,0 +1,61 @@
+{
+  "policy_version": "v2",
+  "test_results": [
+    {
+      "class": "bus",
+      "tier": "CRITICAL",
+      "score": 0.8,
+      "scenario": "VEHICLE_APPROACHING",
+      "rationale": "Rapidly looming bus approaching central path (TTC ~0.9s)",
+      "ttc_seconds": 0.9
+    },
+    {
+      "class": "stairs",
+      "tier": "CRITICAL",
+      "score": 0.75,
+      "scenario": "TERRAIN_DROP_AHEAD",
+      "rationale": "Impending stairs terrain transition ahead (proximity: 0.68)",
+      "ttc_seconds": null
+    },
+    {
+      "class": "car",
+      "tier": "WARNING",
+      "score": 0.558359375,
+      "scenario": "VEHICLE_CROSSING_PATH",
+      "rationale": "Lateral moving car crossing travel trajectory",
+      "ttc_seconds": null
+    },
+    {
+      "class": "fire",
+      "tier": "CRITICAL",
+      "score": 0.85,
+      "scenario": "FIRE_HAZARD",
+      "rationale": "Detected active fire (92% confidence)",
+      "ttc_seconds": null
+    },
+    {
+      "class": "curb",
+      "tier": "CAUTION",
+      "score": 0.466,
+      "scenario": "ENVIRONMENT_INFO",
+      "rationale": "Observed curb at safe distance",
+      "ttc_seconds": null
+    },
+    {
+      "class": "chair",
+      "tier": "INFO",
+      "score": 0.2451796875,
+      "scenario": "ENVIRONMENT_INFO",
+      "rationale": "Observed chair at safe distance",
+      "ttc_seconds": null
+    },
+    {
+      "class": "couch",
+      "tier": "CAUTION",
+      "score": 0.43750000000000006,
+      "scenario": "ENVIRONMENT_INFO",
+      "rationale": "Observed couch at safe distance",
+      "ttc_seconds": 0.7
+    }
+  ]
+}

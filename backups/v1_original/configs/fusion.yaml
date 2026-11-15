@@ -1,0 +1,39 @@
+# Multimodal Transformer Fusion configuration for AI AINAK
+model:
+  name: "MultimodalTransformer"
+  weights: "artifacts/fusion/fusion.pt"
+  architecture: "TransformerEncoder"
+  embedding_dim: 128
+  num_heads: 4
+  num_layers: 2
+  feedforward_dim: 256
+  dropout: 0.1
+  modality_dropout: 0.1
+  sequence_length: 8
+
+modality_dimensions:
+  vision: 128
+  audio: 2048
+  gesture: 128
+
+temporal_alignment:
+  temporal_window_seconds: 2.0
+  lookback_seconds: 8.0
+  stride_seconds: 1.0
+  max_feature_age_seconds: 1.5
+
+target_tasks:
+  priority_prediction:
+    type: "regression"
+    range: [0.0, 1.0]
+  confidence_prediction:
+    type: "regression"
+    range: [0.0, 1.0]
+  alert_classification:
+    type: "classification"
+    classes:
+      - "immediate_attention"
+      - "caution"
+      - "informational"
+      - "gesture_feedback"
+      - "uncertain"

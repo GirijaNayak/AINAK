@@ -1,0 +1,34 @@
+{
+  "checkpoints/gesture/best.pt": {
+    "sha256": "ce9b4b787ef1678c439d2a2e8176d8b287736f09e9cf9e065125ef32190669a6",
+    "size_bytes": 1084041
+  },
+  "checkpoints/gesture/latest.pt": {
+    "sha256": "6214e448c8a784a9d1cfb7215257a87f1b24ebd4fd2727261732654db15d9cf0",
+    "size_bytes": 1084077
+  },
+  "checkpoints/vision/best.pt": {
+    "sha256": "9b2c17ab6124a913e9b3a5c170617920d91b0f01111a8479da69f00e2cf27792",
+    "size_bytes": 25923032
+  },
+  "checkpoints/vision/yolo_world_classes.json": {
+    "sha256": "6ded8862984e7ece813581cec263939caadf05ddc26a712fa93c114595227db3",
+    "size_bytes": 4493
+  },
+  "checkpoints/hazard/hazard_policy_v2.json": {
+    "sha256": "d7ee4da982bcbd093cb25e58fa2cfa090f30638619fb11076d283cfc91504481",
+    "size_bytes": 1619
+  },
+  "checkpoints/audio/downstream_mlp.pt": {
+    "sha256": "0ec51e895c1483fc720a146a9a669bccf7bfc5505fb1af149c09563149e879a6",
+    "size_bytes": 2165719
+  },
+  "checkpoints/fusion/fusion.pt": {
+    "sha256": "49aead8f88b731f728d96ce73481c6aa6fc6f3afbf2d2544f7be4ef05c978adb",
+    "size_bytes": 2396290
+  },
+  "checkpoints/media_pipe/pose_landmarker_lite.task": {
+    "sha256": "59929e1d1ee95287735ddd833b19cf4ac46d29bc7afddbbf6753c459690d574a",
+    "size_bytes": 5777746
+  }
+}

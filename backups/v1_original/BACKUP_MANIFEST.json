@@ -1,0 +1,186 @@
+{
+  "backup_timestamp": "2026-11-12T14:33:28Z",
+  "version": "v1_original",
+  "status": "verified_baseline",
+  "test_suite_status": "57 passed in 34.17s",
+  "checkpoints": {
+    "yolov8n.pt": {
+      "original_path": "artifacts\\vision\\yolov8n.pt",
+      "backup_path": "backups\\v1_original\\checkpoints\\yolov8n.pt",
+      "sha256": "f59b3d833e2ff32e194b5bb8e08d211dc7c5bdf144b90d2c8412c47ccfc83b36",
+      "size_bytes": 6549796,
+      "verified": true
+    },
+    "Cnn14_mAP=0.431.pth": {
+      "original_path": "artifacts\\audio\\Cnn14_mAP=0.431.pth",
+      "backup_path": "backups\\v1_original\\checkpoints\\Cnn14_mAP=0.431.pth",
+      "sha256": "0dc499e40e9761ef5ea061ffc77697697f277f6a960894903df3ada000e34b31",
+      "size_bytes": 327428481,
+      "verified": true
+    },
+    "downstream_mlp.pt": {
+      "original_path": "artifacts\\audio\\downstream_mlp.pt",
+      "backup_path": "backups\\v1_original\\checkpoints\\downstream_mlp.pt",
+      "sha256": "0ec51e895c1483fc720a146a9a669bccf7bfc5505fb1af149c09563149e879a6",
+      "size_bytes": 2165719,
+      "verified": true
+    },
+    "pose_landmarker_lite.task": {
+      "original_path": "artifacts\\gesture\\pose_landmarker_lite.task",
+      "backup_path": "backups\\v1_original\\checkpoints\\pose_landmarker_lite.task",
+      "sha256": "59929e1d1ee95287735ddd833b19cf4ac46d29bc7afddbbf6753c459690d574a",
+      "size_bytes": 5777746,
+      "verified": true
+    },
+    "gesture_lstm.pt": {
+      "original_path": "artifacts\\gesture\\gesture_lstm.pt",
+      "backup_path": "backups\\v1_original\\checkpoints\\gesture_lstm.pt",
+      "sha256": "11354e1305cb365da2a3c75cb94165b8857f2d6b2263d6fa0c3253ad52515627",
+      "size_bytes": 1073538,
+      "verified": true
+    },
+    "fusion.pt": {
+      "original_path": "artifacts\\fusion\\fusion.pt",
+      "backup_path": "backups\\v1_original\\checkpoints\\fusion.pt",
+      "sha256": "49aead8f88b731f728d96ce73481c6aa6fc6f3afbf2d2544f7be4ef05c978adb",
+      "size_bytes": 2396290,
+      "verified": true
+    }
+  },
+  "configs": {
+    "alerts.yaml": {
+      "original_path": "configs\\alerts.yaml",
+      "backup_path": "backups\\v1_original\\configs\\alerts.yaml",
+      "sha256": "f339ab192e3590e195e31cff1e81a0404f13b486678ccff709f849e964c54823",
+      "size_bytes": 969
+    },
+    "audio.yaml": {
+      "original_path": "configs\\audio.yaml",
+      "backup_path": "backups\\v1_original\\configs\\audio.yaml",
+      "sha256": "6ed0c6c408dbf0bd43786ead915e28737f795d8f45de7f52f050592e3444895f",
+      "size_bytes": 793
+    },
+    "fusion.yaml": {
+      "original_path": "configs\\fusion.yaml",
+      "backup_path": "backups\\v1_original\\configs\\fusion.yaml",
+      "sha256": "33ede8ba56a1c4681b0fbac16bb37288b6de8480a7b4e675b44e50b616baa65c",
+      "size_bytes": 840
+    },
+    "gesture.yaml": {
+      "original_path": "configs\\gesture.yaml",
+      "backup_path": "backups\\v1_original\\configs\\gesture.yaml",
+      "sha256": "f0022bf3de463601d7eb883705be3460e7810df757960a65bb4bd7f8bda5d152",
+      "size_bytes": 671
+    },
+    "vision.yaml": {
+      "original_path": "configs\\vision.yaml",
+      "backup_path": "backups\\v1_original\\configs\\vision.yaml",
+      "sha256": "03cc1a0d07048863222b41789fba4cd47ac1514f680eb8123cc5f6184fa296b6",
+      "size_bytes": 926
+    }
+  },
+  "reports": {
+    "audio-downstream-eval.json": {
+      "original_path": "reports\\audio-downstream-eval.json",
+      "backup_path": "backups\\v1_original\\reports\\audio-downstream-eval.json",
+      "sha256": "373a053d99f9c6ffed4167fc9ad0c0a41c4c351777c45e947716db0a6e887b3a",
+      "size_bytes": 34084
+    },
+    "audio-esc50.json": {
+      "original_path": "reports\\audio-esc50.json",
+      "backup_path": "backups\\v1_original\\reports\\audio-esc50.json",
+      "sha256": "27bdd43ff0135ec9fa7d66bbf5c95d58174e8265d9cf3a8c5e5e274b2de08cb9",
+      "size_bytes": 409214
+    },
+    "COLAB_DEMONSTRATION_REPORT.md": {
+      "original_path": "reports\\COLAB_DEMONSTRATION_REPORT.md",
+      "backup_path": "backups\\v1_original\\reports\\COLAB_DEMONSTRATION_REPORT.md",
+      "sha256": "9a5a445ff867dfaaa92ae78ab2037c6e4813065773e11dc27bbc34985777e790",
+      "size_bytes": 8488
+    },
+    "COLAB_PRESENTATION_INTEGRATION.md": {
+      "original_path": "reports\\COLAB_PRESENTATION_INTEGRATION.md",
+      "backup_path": "backups\\v1_original\\reports\\COLAB_PRESENTATION_INTEGRATION.md",
+      "sha256": "9faf504e176a7a89eacb0437ee00030e82c52503f75169c4f2e86d77d24c59d5",
+      "size_bytes": 21249
+    },
+    "COMPLETE_MODEL_TRAINING_AUDIT.md": {
+      "original_path": "reports\\COMPLETE_MODEL_TRAINING_AUDIT.md",
+      "backup_path": "backups\\v1_original\\reports\\COMPLETE_MODEL_TRAINING_AUDIT.md",
+      "sha256": "a81c7f5d09de6d0be802fe20c06409934fb09d61ed01878e6b4bba1e03d7b8ee",
+      "size_bytes": 11893
+    },
+    "DASHBOARD_AUDIT_REPORT.md": {
+      "original_path": "reports\\DASHBOARD_AUDIT_REPORT.md",
+      "backup_path": "backups\\v1_original\\reports\\DASHBOARD_AUDIT_REPORT.md",
+      "sha256": "46cb2233dd7ba1dfcd581e581fef9650d129b224890f5df302027fdab26f71a4",
+      "size_bytes": 21583
+    },
+    "DATASET_SIZE_AND_PROVENANCE.md": {
+      "original_path": "reports\\DATASET_SIZE_AND_PROVENANCE.md",
+      "backup_path": "backups\\v1_original\\reports\\DATASET_SIZE_AND_PROVENANCE.md",
+      "sha256": "f51f49ef0258b793160a1450748d3feb63694ceb40a6ab5ae82ec73769d8f86d",
+      "size_bytes": 7225
+    },
+    "FRONTEND_MIGRATION_REPORT.md": {
+      "original_path": "reports\\FRONTEND_MIGRATION_REPORT.md",
+      "backup_path": "backups\\v1_original\\reports\\FRONTEND_MIGRATION_REPORT.md",
+      "sha256": "122f0dceb55c37d9c140b2e18fd4dfb5297ecf03e5f45de6f388807073cf3953",
+      "size_bytes": 16384
+    },
+    "fusion-ablations.json": {
+      "original_path": "reports\\fusion-ablations.json",
+      "backup_path": "backups\\v1_original\\reports\\fusion-ablations.json",
+      "sha256": "b10b965834f3c700a021614e2d4e6877972445be86ea0166a268c48b1aad48b1",
+      "size_bytes": 12068
+    },
+    "MODEL_PERFORMANCE_COMPARISON.md": {
+      "original_path": "reports\\MODEL_PERFORMANCE_COMPARISON.md",
+      "backup_path": "backups\\v1_original\\reports\\MODEL_PERFORMANCE_COMPARISON.md",
+      "sha256": "83349d1ce7d2e3bbc675f1a3cbedbaa60e02394b1ab16173056166b77be22046",
+      "size_bytes": 6399
+    },
+    "phase4-replay-check.json": {
+      "original_path": "reports\\phase4-replay-check.json",
+      "backup_path": "backups\\v1_original\\reports\\phase4-replay-check.json",
+      "sha256": "f696a78d60d430ed9eaec89627fd71a46f44eaeb84e3c2bec32ff6627d40915b",
+      "size_bytes": 4006
+    },
+    "phase4-replay-check.trace.jsonl": {
+      "original_path": "reports\\phase4-replay-check.trace.jsonl",
+      "backup_path": "backups\\v1_original\\reports\\phase4-replay-check.trace.jsonl",
+      "sha256": "8accf25cdd6a87a705608e0a7b0dbe50609457977234719f09e7c308d8de7ba5",
+      "size_bytes": 457595
+    },
+    "PRESENTATION_METRICS_SUMMARY.md": {
+      "original_path": "reports\\PRESENTATION_METRICS_SUMMARY.md",
+      "backup_path": "backups\\v1_original\\reports\\PRESENTATION_METRICS_SUMMARY.md",
+      "sha256": "20728c9a9f2e3ad2cc54c59373613913b82e6234e561f4a0d4b545e7fa234284",
+      "size_bytes": 6703
+    },
+    "TRANSFORMER_FUSION_EVALUATION.md": {
+      "original_path": "reports\\TRANSFORMER_FUSION_EVALUATION.md",
+      "backup_path": "backups\\v1_original\\reports\\TRANSFORMER_FUSION_EVALUATION.md",
+      "sha256": "99843e98d2962d00ffb677ffb04957700fe8b5877874dffac06aee0c19a18def",
+      "size_bytes": 8663
+    },
+    "vision-coco128-val.json": {
+      "original_path": "reports\\vision-coco128-val.json",
+      "backup_path": "backups\\v1_original\\reports\\vision-coco128-val.json",
+      "sha256": "c727beb80663d6f8204cdf6762b5d4b009164a20dd50e8bc891e8b5b4ccfad93",
+      "size_bytes": 692
+    },
+    "vision-profile-320.json": {
+      "original_path": "reports\\vision-profile-320.json",
+      "backup_path": "backups\\v1_original\\reports\\vision-profile-320.json",
+      "sha256": "36fddd00337ae4efce0c62db6da82772efb918ce29ce945bfbed48dc34f7389c",
+      "size_bytes": 3019
+    },
+    "vision-profile-640.json": {
+      "original_path": "reports\\vision-profile-640.json",
+      "backup_path": "backups\\v1_original\\reports\\vision-profile-640.json",
+      "sha256": "0947c86cdd0d3d46864a75143aa499d54dce31fe46b8b5cc608aeaebdb9454a2",
+      "size_bytes": 3807
+    }
+  }
+}

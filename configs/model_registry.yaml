@@ -1,0 +1,119 @@
+# AI AINAK — Model Registry Configuration
+# Maps version tags (v1, v2) to model architectures, weights paths, and capabilities.
+
+registry_version: "2.0"
+default_version: "v1"
+
+modules:
+  vision:
+    v1:
+      name: "YOLOv8n-COCO"
+      architecture: "YOLOv8n"
+      weights: "artifacts/v1/vision/yolov8n.pt"
+      fallback_weights: "artifacts/vision/yolov8n.pt"
+      framework: "ultralytics"
+      input_size: 640
+      categories_count: 80
+      feature_dim: 128
+      confidence_threshold: 0.35
+      iou_threshold: 0.45
+      description: "Ultralytics YOLOv8n pretrained on Microsoft COCO (80 object classes)"
+    v2:
+      name: "YOLO-Worldv2-Expanded"
+      architecture: "YOLOWorldv2-S"
+      weights: "artifacts/v2/vision/best.pt"
+      fallback_weights: "yolov8s-worldv2.pt"
+      framework: "ultralytics"
+      input_size: 640
+      categories_count: 220
+      feature_dim: 128
+      confidence_threshold: 0.25
+      iou_threshold: 0.45
+      description: "Open-vocabulary YOLO-World v2 Small supporting 220+ everyday, accessibility, and hazard categories"
+
+  gesture:
+    v1:
+      name: "GestureLSTM-4Class"
+      architecture: "GestureLSTM"
+      weights: "artifacts/v1/gesture/gesture_lstm.pt"
+      fallback_weights: "artifacts/gesture/gesture_lstm.pt"
+      pose_model: "artifacts/v1/gesture/pose_landmarker_lite.task"
+      fallback_pose_model: "artifacts/gesture/pose_landmarker_lite.task"
+      sequence_length: 24
+      feature_dim: 132
+      hidden_size: 128
+      layers: 2
+      embedding_dim: 128
+      classes:
+        - "pointing"
+        - "waving"
+        - "stop"
+        - "neutral"
+      description: "2-layer unidirectional LSTM on 33-point BlazePose kinematics recognizing 4 basic classes"
+    v2:
+      name: "GestureTemporalTransformer-25Class"
+      architecture: "GestureTemporalNet"
+      weights: "artifacts/v2/gesture/best.pt"
+      fallback_weights: "artifacts/v2/gesture/latest.pt"
+      pose_model: "artifacts/gesture/pose_landmarker_lite.task"
+      sequence_length: 24
+      feature_dim: 132
+      hidden_size: 128
+      layers: 2
+      embedding_dim: 128
+      classes:
+        - "idle"
+        - "wave"
+        - "stop"
+        - "come_here"
+        - "go_away"
+        - "thumbs_up"
+        - "thumbs_down"
+        - "ok_sign"
+        - "peace_sign"
+        - "open_palm"
+        - "fist"
+        - "pointing_left"
+        - "pointing_right"
+        - "pointing_forward"
+        - "pointing_upward"
+        - "pointing_downward"
+        - "help"
+        - "emergency"
+        - "call_someone"
+        - "follow_me"
+        - "wait"
+        - "turn_left"
+        - "turn_right"
+        - "slow_down"
+        - "thank_you"
+      description: "Expanded kinematic temporal sequence recognizer supporting 25 communicative and emergency gestures"
+
+  hazard:
+    v1:
+      name: "RuleBasedHazardScorer-v1"
+      version: "v1"
+      levels:
+        - "none"
+        - "informational"
+        - "caution"
+        - "immediate_attention"
+      critical_classes_count: 12
+      description: "Baseline heuristic hazard scorer evaluating distance proxy and looming rate"
+    v2:
+      name: "ContextualHazardEngine-v2"
+      version: "v2"
+      levels:
+        - "INFO"
+        - "CAUTION"
+        - "WARNING"
+        - "CRITICAL"
+      factors:
+        - "object_class_risk"
+        - "relative_proximity"
+        - "trajectory_looming_rate"
+        - "lateral_crossing_vector"
+        - "collision_corridor_alignment"
+        - "temporal_persistence"
+        - "confidence_uncertainty"
+      description: "Multi-tiered contextual hazard engine with 4 separate hazard levels and trajectory/collision prediction"

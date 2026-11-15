@@ -1,0 +1,161 @@
+{
+  "session_id": "session-multimodal-01",
+  "dual_pipeline_mode": true,
+  "multimodal_transformer_evaluated": true,
+  "checkpoint_fusion": "fusion.pt",
+  "evaluated_milestones": [
+    {
+      "milestone": 1,
+      "frame_idx": 10,
+      "timestamp_sec": 0.3333333333333333,
+      "audio_label": "ambient_silence",
+      "audio_rms": 0.0,
+      "v1_detections": [
+        "bus",
+        "person",
+        "person",
+        "person",
+        "person"
+      ],
+      "v2_detections": [
+        "keys",
+        "keys",
+        "keys",
+        "suitcase",
+        "keys"
+      ],
+      "gesture_v1": "stop",
+      "gesture_v2": "stop",
+      "transformer_priority": 53.197360038757324,
+      "transformer_confidence": 65.9040629863739,
+      "transformer_alert": "caution",
+      "modality_contributions": [
+        0.49987027049064636,
+        0.0,
+        0.5001296997070312
+      ],
+      "hazard_tier": "CAUTION",
+      "hazard_scenario": "ENVIRONMENT_INFO",
+      "hazard_score": 0.46019401940298665,
+      "latency_a_ms": 3147.8798000007373,
+      "latency_b_ms": 286.70880000026955
+    },
+    {
+      "milestone": 2,
+      "frame_idx": 35,
+      "timestamp_sec": 1.1666666666666667,
+      "audio_label": "ambient_silence",
+      "audio_rms": 0.0,
+      "v1_detections": [
+        "bus",
+        "person",
+        "person",
+        "person"
+      ],
+      "v2_detections": [
+        "keys",
+        "keys",
+        "keys",
+        "suitcase",
+        "keys",
+        "tablet"
+      ],
+      "gesture_v1": "stop",
+      "gesture_v2": "slow_down",
+      "transformer_priority": 51.26786231994629,
+      "transformer_confidence": 65.09959101676941,
+      "transformer_alert": "caution",
+      "modality_contributions": [
+        0.4999449849128723,
+        0.0,
+        0.5000550746917725
+      ],
+      "hazard_tier": "CAUTION",
+      "hazard_scenario": "ENVIRONMENT_INFO",
+      "hazard_score": 0.45958883004424006,
+      "latency_a_ms": 93.62700000019686,
+      "latency_b_ms": 140.29280000067956
+    },
+    {
+      "milestone": 3,
+      "frame_idx": 65,
+      "timestamp_sec": 2.1666666666666665,
+      "audio_label": "mouse_click",
+      "audio_rms": 0.1314423334097103,
+      "v1_detections": [
+        "bus",
+        "person",
+        "person",
+        "person"
+      ],
+      "v2_detections": [
+        "keys",
+        "keys",
+        "keys",
+        "suitcase",
+        "keys"
+      ],
+      "gesture_v1": "stop",
+      "gesture_v2": "stop",
+      "transformer_priority": 50.94764232635498,
+      "transformer_confidence": 62.851935625076294,
+      "transformer_alert": "caution",
+      "modality_contributions": [
+        0.33321958780288696,
+        0.33340877294540405,
+        0.3333716094493866
+      ],
+      "hazard_tier": "CAUTION",
+      "hazard_scenario": "ENVIRONMENT_INFO",
+      "hazard_score": 0.460321068322217,
+      "latency_a_ms": 95.19220000038331,
+      "latency_b_ms": 142.45170000140206
+    },
+    {
+      "milestone": 4,
+      "frame_idx": 90,
+      "timestamp_sec": 3.0,
+      "audio_label": "ambient_silence",
+      "audio_rms": 0.0,
+      "v1_detections": [
+        "bus",
+        "person",
+        "person",
+        "person"
+      ],
+      "v2_detections": [
+        "keys",
+        "keys",
+        "keys",
+        "suitcase",
+        "keys",
+        "tablet"
+      ],
+      "gesture_v1": "stop",
+      "gesture_v2": "stop",
+      "transformer_priority": 52.567607164382935,
+      "transformer_confidence": 65.9013032913208,
+      "transformer_alert": "caution",
+      "modality_contributions": [
+        0.4998869001865387,
+        0.0,
+        0.5001131296157837
+      ],
+      "hazard_tier": "CAUTION",
+      "hazard_scenario": "ENVIRONMENT_INFO",
+      "hazard_score": 0.45971307916405757,
+      "latency_a_ms": 95.32539999963774,
+      "latency_b_ms": 294.0582999999606
+    }
+  ],
+  "measured_performance": {
+    "pipeline_a_mean_latency_ms": 858.0061000002388,
+    "pipeline_a_fps": 1.1654928793626544,
+    "pipeline_b_mean_latency_ms": 215.87790000057794,
+    "pipeline_b_fps": 4.63224813654998
+  },
+  "audit_compliance": {
+    "pipeline_a_fusion_status": "VALIDATED_PRODUCTION",
+    "pipeline_b_fusion_status": "INDEPENDENT_BRANCHES_ADAPTER_NOT_READY"
+  }
+}

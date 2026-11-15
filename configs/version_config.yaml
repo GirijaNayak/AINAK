@@ -1,0 +1,4 @@
+models:
+  gesture: v1
+  hazard: v1
+  vision: v1

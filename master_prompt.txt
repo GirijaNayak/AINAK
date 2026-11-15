@@ -1,0 +1,781 @@
+<USER_REQUEST>
+# MASTER TASK: AI AINAK V2 — DEVELOP, TRAIN AND VALIDATE A NEW MULTIMODAL FUSION TRANSFORMER
+
+## 1. PRIMARY OBJECTIVE
+
+Develop and train a NEW V2-compatible Multimodal Fusion Transformer for the AI AINAK assistive glasses project.
+
+The objective is to combine the actual outputs of the three existing V2 perception branches:
+
+1. Vision V2 — YOLO-World V2 Small
+2. Audio — PANNs CNN14 + AudioMLP
+3. Gesture V2 — GestureTemporalNet
+
+The new Transformer must learn to combine their feature representations and generate meaningful multimodal outputs, including:
+
+- Combined environmental understanding
+- Hazard classification
+- Hazard priority
+- Alert classification
+- Modality contribution or attention weights
+- Temporal context across successive observations
+
+The final model must support a genuine inference demonstration using a previously unseen, synchronized video and audio recording of approximately 10 seconds.
+
+This is a NEW Transformer development task.
+
+Do not treat the existing V1 `fusion.pt` as the completed V2 model. Do not simply modify the original V1 checkpoint or force V2 features into its existing projections.
+
+## 2. STRICT EXECUTION RULES
+
+Follow these rules throughout the task.
+
+1. Inspect the actual repository, notebooks, Python modules, configuration files, checkpoints, datasets and training scripts before implementation.
+2. Never assume a file exists just because it is mentioned in an earlier report.
+3. Never invent dataset sizes, feature dimensions, class labels, training metrics or model capabilities.
+4. Verify all architecture dimensions directly from the implementation and checkpoint state dictionaries.
+5. Do not silently change existing model architectures or preprocessing.
+6. Do not retrain YOLO-World, GestureTemporalNet or AudioMLP unless an actual technical incompatibility makes it unavoidable. If it does, stop and report the reason first.
+7. Do not modify any existing checkpoint.
+8. Do not overwrite the original V1 Transformer or its checkpoint.
+9. Do not use random vectors, dummy embeddings, manually entered predictions or hardcoded model outputs as genuine training data.
+10. Do not claim that a model is trained or validated unless the corresponding execution and evidence exist.
+11. Do not generate artificial historical training screenshots.
+12. Do not use arbitrary class-index mapping, modulo projections or semantically unrelated feature conversions.
+13. Preserve the existing V1 and V2 pipelines as separate systems.
+14. Do not introduce live webcam or microphone requirements.
+15. Work efficiently: reuse existing code, datasets, feature extractors, cached outputs and checkpoints wherever possible.
+
+If an essential dependency or dataset is missing, document it precisely. Do not silently replace it with invented data.
+
+## 3. INITIAL REPOSITORY AUDIT
+
+Before writing code, inspect the entire relevant project structure.
+
+Locate and inspect:
+
+- Existing V2 vision model implementation and checkpoint.
+- Existing V2 gesture model implementation and checkpoint.
+- PANNs CNN14 implementation and checkpoint.
+- AudioMLP implementation and checkpoint.
+- Existing V1 Transformer implementation and checkpoint.
+- Existing V2 hazard engine and policy configuration.
+- Existing fusion training scripts.
+- Existing aligned feature manifests.
+- Existing video and audio recordings.
+- Existing feature extraction and preprocessing functions.
+- Existing evaluation scripts and reports.
+- Existing Colab notebooks 00–07.
+
+Known project assets to locate and verify include:
+
+### Vision V2
+`artifacts/v2/vision/best.pt`
+
+`artifacts/v2/vision/yolo_world_classes.json`
+
+### Gesture V2
+`artifacts/v2/gesture/best.pt`
+
+`artifacts/v2/gesture/latest.pt` (if present)
+
+### Audio
+`artifacts/audio/Cnn14_mAP=0.431.pth`
+
+`artifacts/audio/downstream_mlp.pt`
+
+### Existing fusion
+`artifacts/fusion/fusion.pt`
+
+### Hazard configuration
+`artifacts/v2/hazard/hazard_policy_v2.json`
+
+### Existing recordings
+`datasets/recordings/session-multimodal-01/video.mp4`
+
+`datasets/recordings/session-multimodal-01/audio.wav`
+
+`datasets/recordings/session-multimodal-01/aligned.jsonl`
+
+The paths above are search targets, not guaranteed locations. Resolve the actual paths from the repository.
+
+### Produce an audit report
+
+Create:
+
+`reports/v2_transformer/01_REPOSITORY_AUDIT.md`
+
+The report must contain:
+
+- Located files and actual paths.
+- Checkpoint verification results.
+- Model architecture details.
+- Actual input and output dimensions.
+- Existing preprocessing requirements.
+- Existing feature extraction functions.
+- Available datasets and recording counts.
+- Existing label definitions.
+- Missing dependencies.
+- Existing fusion implementation limitations.
+- Exact blockers to training.
+
+Do not proceed with an assumed architecture before this audit is complete.
+
+## 4. VERIFY THE THREE MODALITY FEATURE CONTRACTS
+
+The Transformer must consume genuine outputs from the existing models.
+
+Inspect the real implementations and document the exact feature contracts.
+
+### A. Vision branch
+
+Model: YOLO-World V2 Small.
+
+Verify:
+
+- Actual class taxonomy.
+- Detection bounding boxes.
+- Class identifiers and class names.
+- Detection confidence scores.
+- Relevant spatial and contextual features.
+- Any existing learned visual embeddings.
+- Actual feature dimensions.
+- Frame timestamp association.
+
+Do not treat the number of configured categories as the dimensionality of a learned embedding.
+
+If the model exposes only detections and no suitable learned semantic embedding, design a deterministic, documented representation from the genuine detection outputs or extract a suitable internal representation using a verified model interface.
+
+Do not invent visual features.
+
+### B. Audio branch
+
+Models:
+
+- PANNs CNN14 pretrained AudioSet backbone.
+- AudioMLP trained on ESC-50.
+
+Verify:
+
+- Actual waveform preprocessing.
+- Sample rate.
+- Audio window duration.
+- CNN14 embedding dimensions.
+- AudioMLP input dimensions.
+- Output class taxonomy.
+- Classification probabilities.
+- Audio timestamp association.
+
+Use real audio embeddings extracted by CNN14.
+
+Never replace actual CNN14 features with `torch.randn`, random vectors or placeholder embeddings.
+
+Preserve the original AudioMLP preprocessing.
+
+### C. Gesture branch
+
+Model: GestureTemporalNet V2.
+
+Verify:
+
+- Actual 25 gesture classes.
+- Pose sequence length.
+- Landmark representation.
+- Feature normalization.
+- Temporal input dimensions.
+- Model output logits.
+- Probability distribution.
+- Embedding dimensions, if exposed.
+- Timestamp association.
+
+Use the existing trained GestureTemporalNet checkpoint.
+
+Do not assume that its output dimension is the same as its internal embedding dimension.
+
+### Feature contract report
+
+Create:
+
+`reports/v2_transformer/02_FEATURE_CONTRACT.md`
+
+Include a table:
+
+| Modality | Source model | Actual feature representation | Dimension | Preprocessing | Timestamp |
+|---|---|---|---|---|---|
+
+Every dimension must be verified from code or actual tensors.
+
+## 5. BUILD A GENUINE ALIGNED FUSION DATASET
+
+This is a critical stage.
+
+The three branches operate at different temporal rates. Vision may generate frame-level detections, audio generates window-level features, and gesture recognition requires temporal pose sequences.
+
+Implement a common timestamp-based alignment system.
+
+Requirements:
+
+1. Extract real features from synchronized recordings.
+2. Preserve the original timestamps.
+3. Associate video frames with the correct audio windows.
+4. Associate pose sequences with their corresponding time intervals.
+5. Handle missing or unavailable modalities explicitly.
+6. Store modality masks.
+7. Preserve source recording IDs.
+8. Preserve ground-truth labels and their provenance.
+9. Prevent train/test leakage.
+
+### Dataset splitting
+
+Split by complete recording or subject wherever applicable.
+
+Do not randomly split adjacent frames or windows from the same recording across training and testing if this creates leakage.
+
+### Critical existing-data limitation
+
+The previously audited fusion dataset contained only 12 aligned windows.
+
+Do not assume this is sufficient for training a dependable Transformer.
+
+Count the actual available data.
+
+If the existing recordings are insufficient:
+
+- Identify the exact missing quantity and type of labelled examples.
+- Reuse any additional legitimate recordings already present in the project.
+- Extract additional features from available recordings without changing branch checkpoints.
+- Build a reproducible data preparation pipeline.
+- Clearly distinguish real recordings from synthetic augmentation.
+- Only use synthetic data for explicitly labelled auxiliary experiments, never as evidence of real-world performance.
+- Do not manufacture ground-truth labels from the model's own predictions and then present them as independent ground truth.
+
+If the dataset cannot support meaningful supervised fusion training, stop before claiming successful training. Deliver the working feature extraction pipeline, dataset audit and precise data collection requirements.
+
+### Dataset outputs
+
+Save:
+
+`datasets/v2_fusion/`
+
+Include:
+
+- Extracted modality features.
+- Timestamp alignment manifests.
+- Label files.
+- Recording-level splits.
+- Dataset metadata.
+- Feature extraction configuration.
+- Integrity hashes.
+
+Create:
+
+`reports/v2_transformer/03_DATASET_REPORT.md`
+
+## 6. DESIGN THE NEW V2 FUSION TRANSFORMER
+
+Develop a completely separate architecture.
+
+Suggested high-level structure:
+
+Vision features → Vision projection
+
+Audio features → Audio projection
+
+Gesture features → Gesture projection
+
+All projected features → Temporal and cross-modal Transformer
+
+Transformer output → Task-specific prediction heads
+
+The exact architecture must be selected only after inspecting the verified feature contracts and available training data.
+
+### Required architecture capabilities
+
+- Separate modality-specific projection layers.
+- Common latent embedding dimension.
+- Timestamp or positional encoding.
+- Temporal sequence modelling.
+- Cross-modal attention.
+- Missing-modality masks.
+- Modality dropout during training where appropriate.
+- Task-specific prediction heads.
+- Support for variable-length sequences where practical.
+
+### Required prediction heads
+
+Implement only tasks supported by the available labels.
+
+Potential outputs:
+
+1. Hazard class.
+2. Hazard priority.
+3. Alert category.
+4. Multimodal context classification.
+5. Confidence or calibrated prediction score, if properly trained.
+6. Modality contribution or attention weights.
+
+Do not create a prediction head without a corresponding training target and evaluation method.
+
+### Hazard categories and priority
+
+Inspect the existing `hazard_policy_v2.json`.
+
+Reuse its actual taxonomy and tier definitions where compatible.
+
+Do not independently invent new categories or change the hazard policy.
+
+### Architecture configuration
+
+Save:
+
+`artifacts/v2/fusion/v2_transformer_config.json`
+
+It must record:
+
+- Architecture version.
+- Modality dimensions.
+- Projection dimensions.
+- Transformer depth.
+- Number of attention heads.
+- Feed-forward dimension.
+- Dropout.
+- Sequence length.
+- Output heads.
+- Class mappings.
+- Preprocessing configuration.
+- Missing-modality handling.
+
+Create:
+
+`reports/v2_transformer/04_ARCHITECTURE_REPORT.md`
+
+Include the architecture diagram, parameter count and explanation of each component.
+
+## 7. TRAIN THE NEW TRANSFORMER
+
+Implement a reproducible training pipeline.
+
+Use the genuine aligned dataset and labels prepared in Section 5.
+
+### Training requirements
+
+- Use a clearly defined training/validation/test split.
+- Set and record random seeds.
+- Use a suitable optimizer.
+- Use a documented learning rate.
+- Use an appropriate learning-rate scheduler if useful.
+- Use suitable task-specific loss functions.
+- Use validation-based checkpoint selection.
+- Implement early stopping where appropriate.
+- Record training and validation metrics after every epoch.
+- Save the best checkpoint.
+- Save the final checkpoint separately.
+- Preserve the complete training configuration.
+
+Do not select a training configuration solely to obtain attractive graphs.
+
+Do not report training accuracy as test accuracy.
+
+### Training logs
+
+Save:
+
+`artifacts/v2/fusion/training_history.csv`
+
+`artifacts/v2/fusion/training_config.json`
+
+`artifacts/v2/fusion/best.pt`
+
+`artifacts/v2/fusion/latest.pt`
+
+`artifacts/v2/fusion/checkpoint_manifest.json`
+
+If an existing filename is already occupied, preserve it and use a versioned filename.
+
+### Efficient execution
+
+Prioritize a working, reproducible training run over unnecessary architectural complexity.
+
+- Reuse extracted features.
+- Cache expensive model outputs.
+- Avoid repeatedly loading large backbones.
+- Use GPU when available.
+- Use mixed precision only if compatible and numerically safe.
+- Avoid repeated full-dataset inference.
+- Save intermediate outputs so interrupted runs can resume.
+- Avoid training the three existing perception branches again.
+
+Do not claim training completed if execution was interrupted.
+
+## 8. EVALUATION AND VALIDATION
+
+Evaluate the new Transformer on held-out recordings that were not used for training or model selection.
+
+Generate metrics appropriate to each prediction task.
+
+Where applicable, include:
+
+- Accuracy.
+- Precision.
+- Recall.
+- Macro-F1.
+- Per-class F1.
+- Confusion matrix.
+- Validation loss.
+- Test loss.
+- False-positive rate.
+- False-negative rate.
+- Priority prediction error.
+- Calibration metrics, if supported.
+
+### Required ablation tests
+
+Evaluate:
+
+1. Vision only.
+2. Audio only.
+3. Gesture only.
+4. Vision + Audio.
+5. Vision + Gesture.
+6. Audio + Gesture.
+7. Vision + Audio + Gesture.
+
+Also test missing-modality masks.
+
+Explain whether multimodal fusion actually improves performance over individual branches.
+
+Do not assume it does.
+
+### Failure analysis
+
+Document:
+
+- Incorrect predictions.
+- False alerts.
+- Missed hazards.
+- Uncertain predictions.
+- Missing modality behaviour.
+- Dataset limitations.
+- Known generalization problems.
+
+Create:
+
+`reports/v2_transformer/05_EVALUATION_REPORT.md`
+
+## 9. TRAINING SCREENSHOTS AND PRESENTATION EVIDENCE
+
+Save genuine evidence from the actual new Transformer training process.
+
+Do not create fake screenshots or reconstruct training history from checkpoint weights.
+
+Capture screenshots during training when the actual training interface or notebook displays:
+
+1. Model initialization and architecture.
+2. Dataset and split statistics.
+3. Training configuration.
+4. Epoch-by-epoch training progress.
+5. Training and validation loss.
+6. Accuracy or F1 progression where applicable.
+7. Checkpoint saving.
+8. Final held-out evaluation.
+9. Confusion matrix.
+10. Ablation study.
+
+Also generate high-quality figures from the actual saved logs.
+
+### Required feature tables
+
+Generate:
+
+- Vision feature schema.
+- Audio feature schema.
+- Gesture feature schema.
+- Aligned multimodal sample table.
+- Transformer input tensor dimensions.
+- Transformer output dimensions.
+- Parameter count.
+- Training hyperparameters.
+- Evaluation metrics.
+- Ablation results.
+
+### Output structure
+
+Save everything under:
+
+`reports/v2_transformer/training_evidence/`
+
+Organize into:
+
+- `architecture/`
+- `dataset/`
+- `training_graphs/`
+- `confusion_matrices/`
+- `ablation/`
+- `feature_tables/`
+- `screenshots_original/`
+- `evaluation/`
+
+Label each asset accurately as one of:
+
+- Original training screenshot.
+- Graph generated from actual training logs.
+- Evaluation visualization.
+- Architecture illustration.
+- Reconstructed evidence.
+
+Create:
+
+`reports/v2_transformer/06_TRAINING_EVIDENCE_INDEX.md`
+
+## 10. UPDATE NOTEBOOK 05
+
+The existing Notebook 05 must be updated to demonstrate the new V2 Transformer.
+
+Do not overwrite the original notebook.
+
+Create a separate file:
+
+`notebooks/v2_colab/05_V2_Transformer_and_Multimodal_Fusion_FINAL.ipynb`
+
+Requirements:
+
+- Load the new V2 Transformer checkpoint.
+- Load the exact verified configuration.
+- Load genuine aligned feature data.
+- Verify feature dimensions before inference.
+- Execute actual forward passes.
+- Display prediction probabilities.
+- Display hazard priority and alert outputs.
+- Display attention visualizations where technically valid.
+- Demonstrate missing-modality handling.
+- Include checkpoint integrity verification.
+- Include a short explanation of the architecture and training.
+
+Do not use dummy feature inputs to make the notebook appear functional.
+
+If a small illustrative example is needed, label it clearly as illustrative and keep it separate from actual inference results.
+
+## 11. UPDATE NOTEBOOK 06 INTEGRATION
+
+Preserve the existing fixed Notebook 06.
+
+Do not overwrite:
+
+`06_V2_Complete_AINAK_Demonstration_FIXED.ipynb`
+
+Create a new version:
+
+`notebooks/v2_colab/06_V2_Complete_AINAK_Demonstration_FINAL.ipynb`
+
+Integrate the newly trained V2 Transformer into Pipeline B.
+
+Requirements:
+
+- Keep the original V1 Pipeline A separate and unchanged.
+- Keep the V2 perception checkpoints unchanged.
+- Connect genuine V2 vision features.
+- Connect genuine audio features.
+- Connect genuine V2 gesture features.
+- Align all modalities by timestamps.
+- Pass the aligned V2 representations into the new V2 Transformer.
+- Display actual fusion outputs.
+- Use the existing V2 hazard policy consistently.
+- Preserve missing-modality handling.
+- Remove misleading claims about V2 Transformer readiness.
+- Do not use hardcoded predictions or random vectors.
+
+The objective is to make the notebook capable of supporting the final 10-second recorded demonstration.
+
+Do not claim a complete 10-second end-to-end demonstration until it has been executed successfully with real recorded inputs.
+
+## 12. AUTOMATED TESTS
+
+Create tests for:
+
+- Checkpoint loading.
+- Feature dimension compatibility.
+- Preprocessing consistency.
+- Timestamp alignment.
+- Missing-modality masks.
+- Transformer forward pass.
+- Output shape and class mapping.
+- NaN and infinite value detection.
+- Checkpoint save and reload.
+- Reproducible inference.
+- Evaluation metric generation.
+- Notebook syntax and cell execution dependencies.
+
+Run all tests that can be executed in the available environment.
+
+Clearly separate:
+- Unit tests passed.
+- Integration tests passed.
+- Local runtime simulation.
+- Actual Google Colab execution.
+- Tests blocked by missing data or hardware.
+
+Never describe one as another.
+
+## 13. CHECKPOINT INTEGRITY
+
+Before implementation, calculate and save SHA-256 hashes of every existing model checkpoint.
+
+After implementation, calculate them again.
+
+Verify that:
+
+- YOLO-World checkpoint is unchanged.
+- GestureTemporalNet checkpoint is unchanged.
+- PANNs checkpoint is unchanged.
+- AudioMLP checkpoint is unchanged.
+- V1 Transformer checkpoint is unchanged.
+- Existing hazard policy is unchanged.
+
+The only new model checkpoint should be the newly trained V2 Fusion Transformer.
+
+Create:
+
+`reports/v2_transformer/07_CHECKPOINT_INTEGRITY_REPORT.md`
+
+## 14. FINAL DIRECTORY STRUCTURE
+
+Organize all new work without destroying original files.
+
+Expected structure:
+
+AINAK_V2_FINAL/
+
+├── artifacts/
+
+│   └── v2/
+
+│       └── fusion/
+
+│           ├── best.pt
+
+│           ├── latest.pt
+
+│           ├── v2_transformer_config.json
+
+│           ├── training_history.csv
+
+│           ├── training_config.json
+
+│           └── checkpoint_manifest.json
+
+├── datasets/
+
+│   └── v2_fusion/
+
+│       ├── features/
+
+│       ├── manifests/
+
+│       ├── labels/
+
+│       └── splits/
+
+├── notebooks/
+
+│   └── v2_colab/
+
+│       ├── 05_V2_Transformer_and_Multimodal_Fusion_FINAL.ipynb
+
+│       └── 06_V2_Complete_AINAK_Demonstration_FINAL.ipynb
+
+└── reports/
+
+    └── v2_transformer/
+
+        ├── 01_REPOSITORY_AUDIT.md
+
+        ├── 02_FEATURE_CONTRACT.md
+
+        ├── 03_DATASET_REPORT.md
+
+        ├── 04_ARCHITECTURE_REPORT.md
+
+        ├── 05_EVALUATION_REPORT.md
+
+        ├── 06_TRAINING_EVIDENCE_INDEX.md
+
+        ├── 07_CHECKPOINT_INTEGRITY_REPORT.md
+
+        └── training_evidence/
+
+Do not relocate original assets merely to match this structure. Use references or copies as necessary and document the actual paths.
+
+## 15. EXECUTION PRIORITY AND TIME EFFICIENCY
+
+Work in this exact order:
+
+1. Repository audit.
+2. Verify feature contracts.
+3. Audit available labelled data.
+4. Extract and align real features.
+5. Establish whether training is genuinely feasible.
+6. Implement the V2 Transformer.
+7. Train and evaluate it.
+8. Save training evidence.
+9. Update Notebook 05.
+10. Integrate into a new Notebook 06.
+11. Run tests.
+12. Produce final report.
+
+Do not spend time rebuilding existing components that already work.
+
+Do not repeatedly ask for approval for routine implementation decisions.
+
+Use the simplest technically valid implementation that satisfies the requirements.
+
+If training is blocked, complete all independent tasks and produce an exact blocker report. Do not spend time pretending the blocker has been resolved.
+
+## 16. FINAL COMPLETION REPORT
+
+Create:
+
+`reports/v2_transformer/FINAL_COMPLETION_REPORT.md`
+
+It must answer:
+
+1. What was inspected?
+2. What was implemented?
+3. What existing components were reused?
+4. What new architecture was created?
+5. What genuine data was used?
+6. How many recordings, sequences and aligned windows were available?
+7. What were the training, validation and test splits?
+8. How many epochs actually ran?
+9. What were the actual evaluation metrics?
+10. Was the model tested on unseen recordings?
+11. Were missing-modality scenarios tested?
+12. Were all existing checkpoint hashes preserved?
+13. Which notebooks were updated?
+14. Which tests passed?
+15. Which tests remain unverified?
+16. What limitations remain?
+17. Is the new V2 Transformer genuinely ready for the final demonstration?
+
+Provide a final file inventory and exact paths.
+
+## FINAL ACCEPTANCE CONDITION
+
+The task is complete only when:
+
+- A new V2-compatible Transformer exists.
+- It consumes real, correctly aligned V2 branch features.
+- It has been trained using legitimate labelled data.
+- It has been evaluated on held-out recordings.
+- Its training logs and genuine evidence are saved.
+- Notebook 05 executes the new model.
+- A separate final Notebook 06 integrates the new model with the V2 branches.
+- Existing checkpoints remain intact.
+- The completion report distinguishes verified results from unverified claims.
+
+Do not mark the project complete merely because code was generated or notebook cells compile.
+
+**Start by auditing the repository and proceed immediately through the stages that are genuinely supported by the available assets. Prioritize correct implementation, reuse and execution efficiency over unnecessary complexity.**
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-11-15T20:11:09+05:30.
+</ADDITIONAL_METADATA>

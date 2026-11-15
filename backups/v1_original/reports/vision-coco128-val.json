@@ -1,0 +1,21 @@
+{
+  "benchmark": "COCO128 validation",
+  "dataset": "coco128.yaml",
+  "weights": "artifacts\\vision\\yolov8n.pt",
+  "device": "cpu",
+  "image_size": 640,
+  "evaluation_duration_seconds": 22.929286700000375,
+  "metrics": {
+    "mAP50": 0.6051975356243309,
+    "mAP50_95": 0.4467667486364933,
+    "precision": 0.6395486538672631,
+    "recall": 0.5367954729518768
+  },
+  "speed_per_image_ms": {
+    "preprocess": 0.7739664062285101,
+    "inference": 49.229113281228365,
+    "loss": 0.00044375001095886546,
+    "postprocess": 1.866482031246619
+  },
+  "summary": "COCO128 Validation: mAP@0.5=0.6052, mAP@0.5:0.95=0.4468, Precision=0.6395, Recall=0.5368 across 128 instances."
+}
